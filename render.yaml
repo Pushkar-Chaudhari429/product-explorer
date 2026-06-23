@@ -1,0 +1,39 @@
+services:
+  # Backend Web Service
+  - type: web
+    name: product-explorer-backend
+    env: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        sync: false # You will paste your Neon connection string in the Render Dashboard
+      - key: CORS_ORIGIN
+        sync: false # You will paste your frontend URL here, or leave empty if CORS is set to *
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 60000
+      - key: RATE_LIMIT_MAX
+        value: 100
+      - key: SLOW_QUERY_THRESHOLD_MS
+        value: 200
+
+  # Frontend Static Site
+  - type: static
+    name: product-explorer-frontend
+    env: static
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    publishDir: dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: product-explorer-backend
+          property: host
