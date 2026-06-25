@@ -40,7 +40,7 @@ export function ProductsPage() {
   }
 
   return (
-    <motion.main variants={pageVariants} initial="initial" animate="animate" exit="exit" className="min-h-screen pt-20">
+    <main className="min-h-screen pt-20">
       <div className="max-w-7xl mx-auto px-6 pt-12 pb-8">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
@@ -78,6 +78,6 @@ export function ProductsPage() {
           category={category}
         />
       </div>
-    </motion.main>
+    </main>
   );
 }

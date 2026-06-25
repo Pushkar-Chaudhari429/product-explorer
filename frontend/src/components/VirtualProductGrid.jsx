@@ -52,30 +52,26 @@ export function VirtualProductGrid({ products, isLoading, isFetchingNextPage, ha
 
   return (
     <>
-      <AnimatePresence mode="wait">
-        <motion.div key={`${category}-${search}`} variants={filterVariants} initial="initial" animate="animate" exit="exit">
-          <div style={{ height: `${rowVirtualizer.getTotalSize()}px`, position: 'relative' }} role="feed" aria-label={`${products.length} products loaded`}>
-            {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-              const row = rows[virtualRow.index];
-              if (!row) return null;
-              return (
-                <div key={virtualRow.key} data-index={virtualRow.index} ref={rowVirtualizer.measureElement}
-                  style={{ position: 'absolute', top: 0, left: 0, right: 0, transform: `translateY(${virtualRow.start}px)`, paddingBottom: '16px' }}>
-                  {row.type === 'featured' ? (
-                    <ProductCard product={row.product} featured index={row.flatIndex % 24} />
-                  ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {row.items.map(({ product, flatIndex }) => (
-                        <ProductCard key={product.id} product={product} index={flatIndex % 24} />
-                      ))}
-                    </div>
-                  )}
+      <div style={{ height: `${rowVirtualizer.getTotalSize()}px`, position: 'relative' }} role="feed" aria-label={`${products.length} products loaded`}>
+        {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+          const row = rows[virtualRow.index];
+          if (!row) return null;
+          return (
+            <div key={virtualRow.key} data-index={virtualRow.index} ref={rowVirtualizer.measureElement}
+              style={{ position: 'absolute', top: 0, left: 0, right: 0, transform: `translateY(${virtualRow.start}px)`, paddingBottom: '16px' }}>
+              {row.type === 'featured' ? (
+                <ProductCard product={row.product} featured index={row.flatIndex % 24} />
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {row.items.map(({ product, flatIndex }) => (
+                    <ProductCard key={product.id} product={product} index={flatIndex % 24} />
+                  ))}
                 </div>
-              );
-            })}
-          </div>
-        </motion.div>
-      </AnimatePresence>
+              )}
+            </div>
+          );
+        })}
+      </div>
 
       <InfiniteScrollTrigger onIntersect={handleFetchMore} enabled={hasNextPage && !isFetchingNextPage} />
 
